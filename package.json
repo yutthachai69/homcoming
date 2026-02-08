@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx prisma generate && npx prisma db push && next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@supabase/supabase-js": "^2.95.3",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
