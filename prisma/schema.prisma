@@ -1,0 +1,54 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Table {
+  id        Int      @id @default(autoincrement())
+  number    String   @unique
+  zone      String?
+  seats     Int      @default(10)
+  price     Decimal  @default(4000)
+  status    String   @default("AVAILABLE")
+  bookings  Booking[]
+}
+
+model Booking {
+  id           String    @id @default(cuid())
+  customerName String
+  batch        String
+  phone        String
+  tableId      Int
+  table        Table     @relation(fields: [tableId], references: [id])
+  
+  slipUrl      String?
+  amountPaid   Decimal?
+  
+  status       String    @default("PENDING_PAYMENT")
+  
+  verifiedAt   DateTime?
+  
+  updatedBy    String?   // Admin username who last updated
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([phone])
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // Hashed password
+  name      String?
+  role      String   @default("ADMIN")
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
