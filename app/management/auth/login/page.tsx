@@ -9,6 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 
+// Force dynamic rendering to prevent caching issues
+export const dynamic = 'force-dynamic';
+
 export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -64,13 +67,15 @@ export default function LoginPage() {
                             />
                         </div>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="flex flex-col gap-2">
                         <Button type="submit" className="w-full" disabled={loading}>
                             {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ (Admin)"}
                         </Button>
+                        <p className="text-xs text-gray-400 text-center">Version 1.1 (Force Update)</p>
                     </CardFooter>
                 </form>
             </Card>
         </div>
     )
 }
+
