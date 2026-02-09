@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -29,6 +30,7 @@ interface BookingFormProps {
 }
 
 export function BookingForm({ open, onOpenChange, table }: BookingFormProps) {
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState<{ name?: string; batch?: string; phone?: string }>({})
 
@@ -65,6 +67,7 @@ export function BookingForm({ open, onOpenChange, table }: BookingFormProps) {
             } else {
                 toast.success("จองโต๊ะสำเร็จ! กรุณารอแอดมินตรวจสอบ")
                 onOpenChange(false)
+                router.refresh()
             }
         } catch (error) {
             console.error(error)
@@ -86,8 +89,8 @@ export function BookingForm({ open, onOpenChange, table }: BookingFormProps) {
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-                     {/* QR Code Section - Moved to Top */}
-                     <div className="flex flex-col items-center justify-center gap-2 mb-4">
+                    {/* QR Code Section - Moved to Top */}
+                    <div className="flex flex-col items-center justify-center gap-2 mb-4">
                         <span className="text-sm font-medium">สแกนเพื่อจ่ายเงิน</span>
                         <div className="border-2 border-dashed p-2 rounded-lg bg-gray-50">
                             {/* User requested image replacement */}
