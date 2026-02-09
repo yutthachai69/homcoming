@@ -66,7 +66,7 @@ export default function LoginPage() {
                     </CardContent>
                     <CardFooter>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "กำลังเข้าสู่ระบบ..." : "Login"}
+                            {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ (Admin)"}
                         </Button>
                     </CardFooter>
                 </form>
