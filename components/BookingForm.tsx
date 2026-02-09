@@ -68,7 +68,9 @@ export function BookingForm({ open, onOpenChange, table }: BookingFormProps) {
             } else {
                 toast.success("จองโต๊ะสำเร็จ! กรุณารอแอดมินตรวจสอบ")
                 onOpenChange(false)
-                router.refresh()
+
+                // Force reload to ensure data is updated
+                window.location.reload()
             }
         } catch (error) {
             console.error(error)
