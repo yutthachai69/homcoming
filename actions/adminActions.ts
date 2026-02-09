@@ -15,7 +15,11 @@ export async function getDashboardStats() {
     })
 
     const pendingBookings = await prisma.booking.count({
-        where: { status: BookingStatus.VERIFYING }
+        where: {
+            status: {
+                in: [BookingStatus.VERIFYING, BookingStatus.PENDING_PAYMENT]
+            }
+        }
     })
 
     // Calculate total revenue (assuming price is fixed at 4000 or dynamic per table)
