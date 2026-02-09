@@ -60,7 +60,9 @@ export async function createBooking(formData: FormData) {
         }
 
         const buffer = await file.arrayBuffer()
-        const filename = `${Date.now()}_${file.name.replaceAll(" ", "_")}`
+        // Sanitize: Use timestamp + random + extension to ensure ASCII-only filename
+        const fileExt = file.name.split('.').pop()?.replace(/[^a-z0-9]/gi, '') || 'jpg'
+        const filename = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`
 
         try {
             console.log("Start Upload:", filename, "Size:", file.size)
