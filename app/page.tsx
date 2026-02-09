@@ -1,6 +1,6 @@
 import { getTables } from "@/actions/getTables";
 import { TableMap } from "@/components/TableMap";
-import { Toaster } from "sonner";
+
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +19,7 @@ export default async function Home() {
                 </div>
             </section>
 
-            <Toaster />
+
         </main>
     );
 }

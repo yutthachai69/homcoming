@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from "@/lib/utils"
 import { BookingForm } from "./BookingForm"
 
@@ -19,6 +19,15 @@ export function TableMap({ tables }: TableMapProps) {
     const [selectedTable, setSelectedTable] = useState<Table | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [filter, setFilter] = useState<'ALL' | 'AVAILABLE' | 'BOOKED' | 'LOCKED'>('ALL')
+    const [isMounted, setIsMounted] = useState(false)
+
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
+    if (!isMounted) {
+        return <div className="w-full h-96 flex items-center justify-center text-slate-400">Loading tables...</div>
+    }
 
     const handleTableClick = (table: Table) => {
         if (table.status === 'AVAILABLE') {
