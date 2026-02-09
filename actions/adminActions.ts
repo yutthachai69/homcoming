@@ -92,7 +92,7 @@ export async function rejectBooking(bookingId: string, reason: string) {
                 where: { id: bookingId },
                 data: {
                     status: BookingStatus.REJECTED,
-                    adminNotes: reason,
+                    // adminNotes: reason, // Field not in schema yet
                     updatedBy: session.user?.name || session.user?.email
                 }
             }),
