@@ -139,6 +139,7 @@ export function BookingTable({ bookings }: BookingTableProps) {
             case BookingStatus.PAID:
                 return <Badge variant="success">ชำระเงินแล้ว</Badge>
             case BookingStatus.VERIFYING:
+            case BookingStatus.PENDING_PAYMENT:
                 return <Badge variant="warning">รอตรวจสอบ</Badge>
             case BookingStatus.REJECTED:
                 return <Badge variant="destructive">ปฏิเสธ</Badge>
@@ -166,8 +167,8 @@ export function BookingTable({ bookings }: BookingTableProps) {
                             ทั้งหมด
                         </Button>
                         <Button
-                            variant={filterStatus === BookingStatus.VERIFYING ? 'default' : 'outline'}
-                            onClick={() => setFilterStatus(BookingStatus.VERIFYING)}
+                            variant={filterStatus === BookingStatus.PENDING_PAYMENT ? 'default' : 'outline'}
+                            onClick={() => setFilterStatus(BookingStatus.PENDING_PAYMENT)}
                             size="sm"
                         >
                             รอตรวจสอบ
@@ -211,7 +212,7 @@ export function BookingTable({ bookings }: BookingTableProps) {
                                     <TableCell>{new Date(booking.createdAt).toLocaleString('th-TH')}</TableCell>
                                     <TableCell>{getStatusBadge(booking.status)}</TableCell>
                                     <TableCell className="text-right space-x-2">
-                                        {booking.status === BookingStatus.VERIFYING && (
+                                        {(booking.status === BookingStatus.VERIFYING || booking.status === BookingStatus.PENDING_PAYMENT) && (
                                             <Button size="sm" onClick={() => openVerify(booking)}>
                                                 ตรวจสอบ
                                             </Button>
