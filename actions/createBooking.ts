@@ -63,6 +63,7 @@ export async function createBooking(formData: FormData) {
         const filename = `${Date.now()}_${file.name.replaceAll(" ", "_")}`
 
         try {
+            console.log("Start Upload:", filename, "Size:", file.size)
             const { data, error } = await supabase
                 .storage
                 .from('slips')
@@ -72,8 +73,8 @@ export async function createBooking(formData: FormData) {
                 })
 
             if (error) {
-                console.error("Supabase Upload Error:", error)
-                throw error
+                console.error("Supabase Upload Error:", JSON.stringify(error, null, 2))
+                throw new Error(error.message)
             }
 
             // Get Public URL
@@ -84,9 +85,9 @@ export async function createBooking(formData: FormData) {
 
             slipUrl = publicUrl
 
-        } catch (e) {
-            console.error("Upload failed", e)
-            return { error: "อัปโหลดสลิปไม่สำเร็จ กรุณาลองใหม่" }
+        } catch (e: any) {
+            console.error("Upload failed detailed:", e)
+            return { error: `Upload Failed: ${e.message || "Unknown error"}` }
         }
     }
 
