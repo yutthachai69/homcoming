@@ -82,7 +82,7 @@ export function BookingForm({ open, onOpenChange, table }: BookingFormProps) {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>จองโต๊ะ {table.number}</DialogTitle>
                     <DialogDescription>
