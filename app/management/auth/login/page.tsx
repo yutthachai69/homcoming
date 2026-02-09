@@ -71,7 +71,7 @@ export default function LoginPage() {
                         <Button type="submit" className="w-full" disabled={loading}>
                             {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ (Admin)"}
                         </Button>
-                        <p className="text-xs text-gray-400 text-center">Version 1.2 (Cache Buster)</p>
+                        <p className="text-xs text-gray-400 text-center">Version 1.3 (Final Fix)</p>
                     </CardFooter>
                 </form>
             </Card>
