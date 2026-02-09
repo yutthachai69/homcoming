@@ -209,7 +209,7 @@ export function BookingTable({ bookings }: BookingTableProps) {
                                     <TableCell className="font-medium">{booking.table.number}</TableCell>
                                     <TableCell>{booking.customerName}</TableCell>
                                     <TableCell>{booking.batch}</TableCell>
-                                    <TableCell>{new Date(booking.createdAt).toLocaleString('th-TH')}</TableCell>
+                                    <TableCell suppressHydrationWarning>{new Date(booking.createdAt).toLocaleString('th-TH')}</TableCell>
                                     <TableCell>{getStatusBadge(booking.status)}</TableCell>
                                     <TableCell className="text-right space-x-2">
                                         {(booking.status === BookingStatus.VERIFYING || booking.status === BookingStatus.PENDING_PAYMENT) && (
