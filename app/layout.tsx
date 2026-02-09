@@ -16,7 +16,6 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Homecoming Booking | จองโต๊ะงานคืนสู่เหย้า",
-  description: "ระบบจองโต๊ะงานเลี้ยงคืนสู่เหย้า สะดวก รวดเร็ว ทันใจ",
 };
 
 export default function RootLayout({
