@@ -2,12 +2,11 @@
 
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
-import { writeFile } from "fs/promises"
-import path from "path"
 import { BookingStatus, TableStatus } from "@/lib/constants"
 import { z } from "zod"
 import { rateLimit } from "@/lib/rate-limit"
 import { headers } from "next/headers"
+import { supabase } from "@/lib/supabase"
 
 // Zod Schema for Validation
 const bookingSchema = z.object({
@@ -49,10 +48,10 @@ export async function createBooking(formData: FormData) {
         return { error: "โต๊ะนี้ถูกจองไปแล้วครับ หรือไม่ว่าง" }
     }
 
-    // 3. Upload Slip (Local Storage)
+    // 3. Upload Slip (Supabase Storage)
     let slipUrl = null
     if (file && file.size > 0) {
-        // Validate file type (Magic Bytes/MIME check ideally, simplified here)
+        // Validate file type
         if (!file.type.startsWith("image/")) {
             return { error: "ไฟล์สลิปต้องเป็นรูปภาพเท่านั้น" }
         }
@@ -60,16 +59,31 @@ export async function createBooking(formData: FormData) {
             return { error: "ไฟล์สลิปต้องมีขนาดไม่เกิน 5MB" }
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer())
-        const filename = Date.now() + "_" + file.name.replaceAll(" ", "_")
+        const buffer = await file.arrayBuffer()
+        const filename = `${Date.now()}_${file.name.replaceAll(" ", "_")}`
 
-        // Ensure public/uploads exists
-        const uploadDir = path.join(process.cwd(), "public", "uploads")
-        // Note: In production (Vercel), this won't persist. Need S3/Cloudinary.
-        // We assume the directory exists or we create it.
         try {
-            await writeFile(path.join(uploadDir, filename), buffer)
-            slipUrl = `/uploads/${filename}`
+            const { data, error } = await supabase
+                .storage
+                .from('slips')
+                .upload(filename, buffer, {
+                    contentType: file.type,
+                    upsert: false
+                })
+
+            if (error) {
+                console.error("Supabase Upload Error:", error)
+                throw error
+            }
+
+            // Get Public URL
+            const { data: { publicUrl } } = supabase
+                .storage
+                .from('slips')
+                .getPublicUrl(filename)
+
+            slipUrl = publicUrl
+
         } catch (e) {
             console.error("Upload failed", e)
             return { error: "อัปโหลดสลิปไม่สำเร็จ กรุณาลองใหม่" }
