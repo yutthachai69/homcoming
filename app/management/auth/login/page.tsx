@@ -20,19 +20,13 @@ export default function LoginPage() {
         setLoading(true)
 
         try {
-            const result = await signIn('credentials', {
+            await signIn('credentials', {
                 username,
                 password,
-                redirect: false
+                redirect: true,
+                callbackUrl: '/admin'
             })
 
-            if (result?.error) {
-                toast.error("เข้าสู่ระบบไม่สำเร็จ: ชื่อผู้ใช้หรือรหัสผ่านผิด")
-            } else {
-                toast.success("เข้าสู่ระบบสำเร็จ")
-                router.push('/admin')
-                router.refresh()
-            }
         } catch (error) {
             toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่")
         } finally {
